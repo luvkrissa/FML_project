@@ -1,4 +1,4 @@
-Path (Trial/Arm/Folder/Visit/Eye/Image Name),Scan (n/49),Atrophy / thinning of retinal layers,Disruption of EZ,DRIL,IR hemorrhages,IR HRF,Partially attached vitreous face,Fully attached vitreous face,Preretinal tissue/hemorrhage,Vitreous debris,VMT,DRT/ME,Fluid (IRF),Fluid (SRF),Disruption of RPE,PED (serous),SHRM,Eye_ID,BCVA,CST,Patient_ID
+Path (Trial/Arm/Folder/Visit/Eye/Image Name),Scan (n/49),B1,B2,B3,B4,B5,B6,B7,B8,B9,B10,B11,B12,B13,B14,B15,B16,Eye_ID,BCVA,CST,Patient_ID
 /TREX DME/GILA/0236GOS/V1/OS/TREXN_000007.tif,8,0,0,0,0,1,1.0,0.0,0.0,0.0,0,1,1,0,0,0,0,13,69,300,236
 /Prime_FULL/02-045/W104/OS/2.tif,3,0,0,0,0,0,0.0,0.0,0.0,1.0,0,0,0,0,0,0,0,95,68,222,95
 /Prime_FULL/02-045/W104/OS/45.tif,46,0,0,0,0,1,0.0,0.0,1.0,1.0,0,0,0,0,0,0,0,95,68,222,95
