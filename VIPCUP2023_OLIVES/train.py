@@ -31,10 +31,12 @@ def train_supervised(train_loader, model,criterion, optimizer, epoch, opt):
         bsz = labels.shape[0]
 
         # compute loss
-
-
         output = model(images)
+        # print()
+        # print('labels:',labels, labels.shape)
+        # print('output:',output, output.shape)
         loss = criterion(output, labels)
+        # print('loss：',loss)
 
         # update metric
         losses.update(loss.item(), bsz)
@@ -67,9 +69,10 @@ def submission_generate(val_loader, model, opt):
         for idx, (image) in (enumerate(val_loader)):
 
             images = image.float().to(device)
-
+            print(images)
             # forward
             output = model(images)
+            print(output)
             output = torch.round(torch.sigmoid(output))
             out_list.append(output.squeeze().detach().cpu().numpy())
 
@@ -122,8 +125,8 @@ def main():
     for epoch in range(1, opt.epochs + 1):
         train_supervised(train_loader, model, criterion, optimizer, epoch, opt)
 
-    submission_generate(test_loader, model, opt)
-    #sample_evaluation(test_loader, model, opt)
+    # submission_generate(test_loader, model, opt)
+    sample_evaluation(test_loader, model, opt)
 
     save_file = os.path.join(
         opt.save_folder, 'last.pth')

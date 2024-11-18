@@ -11,7 +11,7 @@ from sklearn.metrics import f1_score
 # baseline_result.csv refers to the csv file that you have submitted and is in the same format as the first phase.
 #############################################################################################################
 # Load the CSV files
-ground_truth_df = pd.read_csv('')
+ground_truth_df = pd.read_csv('output.npy')
 test_predictions_df = pd.read_csv('baseline_result.csv')
 
 # Extract disease columns

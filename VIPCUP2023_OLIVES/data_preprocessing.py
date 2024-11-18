@@ -7,6 +7,7 @@ from tqdm import tqdm
 from PIL import Image
 from collections import Counter
 def combine_excel(csv_dir):
+    csv_dir = csv_dir.strip()
     filenames = glob.glob(csv_dir + "/*.xlsx")
     outputxlsx = pd.DataFrame()
 
@@ -20,6 +21,7 @@ def analyze_dataframe(csv_dir):
     pass
 
 def process_images(csv_dir):
+    csv_dir = csv_dir.strip()
     df = pd.read_csv(csv_dir)
 
     for i in tqdm(range(0,len(df))):

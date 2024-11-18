@@ -8,9 +8,12 @@ import torch
 
 class OLIVES(data.Dataset):
     def __init__(self,df, img_dir, transforms):
+        img_dir = img_dir.strip()
+        df = df.strip()
         self.img_dir = img_dir
         self.transforms = transforms
         self.df = pd.read_csv(df)
+        self.df = self.df.dropna(subset=self.df.columns[2:17])  # Keep only valid rows
     def __len__(self):
         return len(self.df)
 
@@ -20,23 +23,10 @@ class OLIVES(data.Dataset):
         image = np.array(image)
         image = Image.fromarray(image)
         image = self.transforms(image)
-        b1 = self.df.iloc[idx,2]
-        b2 = self.df.iloc[idx,3]
-        b3 = self.df.iloc[idx,4]
-        b4 = self.df.iloc[idx, 5]
-        b5 = self.df.iloc[idx, 6]
-        b6 = self.df.iloc[idx, 7]
-        b7 = self.df.iloc[idx, 8]
-        b8 = self.df.iloc[idx, 9]
-        b9 = self.df.iloc[idx, 10]
-        b10 = self.df.iloc[idx, 11]
-        b11 = self.df.iloc[idx, 12]
-        b12 = self.df.iloc[idx, 13]
-        b13 = self.df.iloc[idx, 14]
-        b14 = self.df.iloc[idx, 15]
-        b15 = self.df.iloc[idx, 16]
-        b16 = self.df.iloc[idx, 17]
-        bio_tensor = torch.tensor([b1, b2, b3, b4, b5, b6,blabla])
+        bio_values = [self.df.iloc[idx, col] for col in range(2, 8)]  # Extract 
+
+        # Convert bio values to tensor
+        bio_tensor = torch.tensor(bio_values, dtype=torch.float32)
         return image, bio_tensor
 
 

@@ -19,7 +19,6 @@ class ResNet(nn.Module):
             self.encoder.fc = nn.Identity()
             self.fc = nn.Linear(512, num_classes)
     def forward(self, x):
-
         return self.fc(self.encoder(x))
 
 
