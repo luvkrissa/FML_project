@@ -1,2 +1,9 @@
-#!/bin/bash
-python train.py --batch_size 64 --model 'resnet50' --dataset 'OLIVES' --epochs 100 --device 'cuda:0' --train_image_path '/storage/ice1/shared/d-pace_community/makerspace-datasets/MEDICAL/OLIVES/OLIVES' --test_image_path '/storage/ice1/shared/d-pace_community/makerspace-datasets/MEDICAL/OLIVES/OLIVES' --test_csv_path "/home/hice1/tjiang78/Documents/FML_project/VIPCUP2023_OLIVES/test_data.csv" --train_csv_path "/home/hice1/tjiang78/Documents/FML_project/VIPCUP2023_OLIVES/train_data.csv"
+#!/home/hice1/yli3821/VIPCUP2023_OLIVES/
+--upgrade scikit-learn threadpoolctl 
+python train.py --batch_size 64 --model 'resnet50' --dataset 'OLIVES' --epochs 10 --device 'cuda:0' --num_workers 1 --learning_rate 0.05 --train_image_path '/storage/ice1/shared/d-pace_community/makerspace-datasets/MEDICAL/OLIVES/OLIVES/' --test_image_path '/storage/ice1/shared/d-pace_community/makerspace-datasets/MEDICAL/OLIVES/OLIVES/' --test_csv_path "/home/hice1/yli3821/VIPCUP2023_OLIVES/test_data.csv" --train_csv_path "/home/hice1/yli3821/VIPCUP2023_OLIVES/train_data.csv" 
+
+python train.py --batch_size 64 --model 'vgg16' --dataset 'OLIVES' --epochs 10 --device 'cuda:0' --num_workers 1 --learning_rate 0.05 --train_image_path '/storage/ice1/shared/d-pace_community/makerspace-datasets/MEDICAL/OLIVES/OLIVES/' --test_image_path '/storage/ice1/shared/d-pace_community/makerspace-datasets/MEDICAL/OLIVES/OLIVES/' --test_csv_path "/home/hice1/yli3821/VIPCUP2023_OLIVES/test_data.csv" --train_csv_path "/home/hice1/yli3821/VIPCUP2023_OLIVES/train_data.csv" 
+
+
+
+python train.py --batch_size 64 --model 'inception' --dataset 'OLIVES' --epochs 10 --device 'cuda:0' --num_workers 1 --learning_rate 0.05 --train_image_path '/storage/ice1/shared/d-pace_community/makerspace-datasets/MEDICAL/OLIVES/OLIVES/' --test_image_path '/storage/ice1/shared/d-pace_community/makerspace-datasets/MEDICAL/OLIVES/OLIVES/' --test_csv_path "/home/hice1/yli3821/VIPCUP2023_OLIVES/test_data.csv" --train_csv_path "/home/hice1/yli3821/VIPCUP2023_OLIVES/train_data.csv" 
