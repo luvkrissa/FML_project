@@ -3,17 +3,15 @@ from utils import AverageMeter,save_model
 import sys
 import time
 import numpy as np
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, accuracy_score, confusion_matrix
 from config import parse_option
 import os
 from utils import set_loader, set_model, set_optimizer, adjust_learning_rate
 
-
 def train_supervised(train_loader, model,criterion, optimizer, epoch, opt):
     """one epoch training"""
+    # torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
     model.train()
-
-
     batch_time = AverageMeter()
     data_time = AverageMeter()
     losses = AverageMeter()
@@ -101,11 +99,26 @@ def sample_evaluation(val_loader, model, opt):
             output = model(images)
             output = torch.round(torch.sigmoid(output))
             out_list.append(output.squeeze().detach().cpu().numpy())
-
+    
     label_array = np.array(label_list)
     out_array = np.array(out_list)
+    print(out_array)
+    print("Labels contain NaN:", np.isnan(out_array).any())
     f = f1_score(label_array,out_array,average='macro')
-    print(f)
+    print(f"F1 Score (macro): {f:.4f}")
+    # Compute accuracy
+    accuracy = accuracy_score(label_array, out_array)
+    print(f"Accuracy: {accuracy:.4f}")
+
+    # # Compute confusion matrix
+    # cm = confusion_matrix(label_array, out_array)
+    # print("Confusion Matrix:")
+    # print(cm)
+
+    # # Save the arrays to disk for later use
+    # np.save(f"label_array_{opt.model}.npy", label_array)
+    # np.save(f"out_array_{opt.model}.npy", out_array)
+    # print("Arrays saved as 'label_array.npy' and 'out_array.npy'")
 
 
 def main():
@@ -129,8 +142,9 @@ def main():
     sample_evaluation(test_loader, model, opt)
 
     save_file = os.path.join(
-        opt.save_folder, 'last.pth')
+        opt.save_folder, f'last_{opt.model}.pth')
     save_model(model, optimizer, opt, opt.epochs, save_file)
+
 
 
 if __name__ == '__main__':
