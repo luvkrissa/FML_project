@@ -20,10 +20,12 @@ def train_supervised(train_loader, model,criterion, optimizer, epoch, opt):
     device = opt.device
     end = time.time()
 
-    for idx, (image, bio_tensor) in enumerate(train_loader):
+    for idx, (image, bio_tensor, clinical_tensor) in enumerate(train_loader):
         data_time.update(time.time() - end)
 
         images = image.to(device)
+        clinical = clinical_tensor.float()
+        clinical = clinical.to(device)
 
         labels = bio_tensor.float()
 
@@ -31,10 +33,11 @@ def train_supervised(train_loader, model,criterion, optimizer, epoch, opt):
         bsz = labels.shape[0]
 
         # compute loss
-
-
-        output = model(images)
+        output = model(images, clinical)
+        # print(clinical)
+        # print('labels:',labels, labels.shape)
         loss = criterion(output, labels)
+        # print('loss：',loss)
 
         # update metric
         losses.update(loss.item(), bsz)
@@ -52,6 +55,7 @@ def train_supervised(train_loader, model,criterion, optimizer, epoch, opt):
         if (idx + 1) % opt.print_freq == 0:
             print('Train: [{0}][{1}/{2}]\t'.format(
                 epoch, idx + 1, len(train_loader)))
+            #print('output:',output, output.shape)
 
             sys.stdout.flush()
 
@@ -67,9 +71,10 @@ def submission_generate(val_loader, model, opt):
         for idx, (image) in (enumerate(val_loader)):
 
             images = image.float().to(device)
-
+            print(images)
             # forward
             output = model(images)
+            print(output)
             output = torch.round(torch.sigmoid(output))
             out_list.append(output.squeeze().detach().cpu().numpy())
 
@@ -86,16 +91,18 @@ def sample_evaluation(val_loader, model, opt):
     out_list = []
     label_list = []
     with torch.no_grad():
-        for idx, (image,bio_tensor) in (enumerate(val_loader)):
+        for idx, (image,bio_tensor, clinical_tensor) in (enumerate(val_loader)):
 
             images = image.float().to(device)
+            clinical = clinical_tensor.to(device)
+
             labels = bio_tensor.float()
 
             labels = labels.float()
 
             label_list.append(labels.squeeze().detach().cpu().numpy())
             # forward
-            output = model(images)
+            output = model(images,clinical)
             output = torch.round(torch.sigmoid(output))
             out_list.append(output.squeeze().detach().cpu().numpy())
 
@@ -122,8 +129,8 @@ def main():
     for epoch in range(1, opt.epochs + 1):
         train_supervised(train_loader, model, criterion, optimizer, epoch, opt)
 
-    submission_generate(test_loader, model, opt)
-    #sample_evaluation(test_loader, model, opt)
+    # submission_generate(test_loader, model, opt)
+    sample_evaluation(test_loader, model, opt)
 
     save_file = os.path.join(
         opt.save_folder, 'last.pth')
