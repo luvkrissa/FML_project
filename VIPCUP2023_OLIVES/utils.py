@@ -16,7 +16,7 @@ import torch.nn as nn
 def set_model(opt):
 
     device = opt.device
-    if opt.model == 'renet50' or opt.model == 'renet18':
+    if opt.model in ['resnet50', 'resnet101', 'resnet152', 'resnet18', 'inceptionresnetv2']:
         model = ResNet(name=opt.model,num_classes = opt.ncls)
     elif opt.model in ['vit_b_16', 'maxvit_tiny_tf_224', 'maxvit_base_tf_224', 'eva02_base_patch16_clip_224']:
         model = Transformer(name=opt.model,num_classes = opt.ncls)

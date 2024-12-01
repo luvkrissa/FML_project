@@ -149,6 +149,83 @@ def main():
     save_model(model, optimizer, opt, opt.epochs, save_file)
 
 
+'''def train_supervised(train_loader, model,criterion, optimizer, epoch, opt):
+    """one epoch training"""
+    model.train()
 
-if __name__ == '__main__':
-    main()
+
+    batch_time = AverageMeter()
+    data_time = AverageMeter()
+    losses = AverageMeter()
+    device = opt.device
+    end = time.time()
+
+    for idx, (image, bio_tensor, clinical_tensor) in enumerate(train_loader):
+        data_time.update(time.time() - end)
+
+        images = image.to(device)
+        clinical = clinical_tensor.float()
+        clinical = clinical.to(device)
+
+        labels = bio_tensor.float()
+
+        labels = labels.to(device)
+        bsz = labels.shape[0]
+
+        # compute loss
+        output = model(images, clinical)
+        # print(clinical)
+        # print('labels:',labels, labels.shape)
+        loss = criterion(output, labels)
+        # print('loss：',loss)
+
+        # update metric
+        losses.update(loss.item(), bsz)
+
+        # SGD
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        # measure elapsed time
+        batch_time.update(time.time() - end)
+        end = time.time()
+
+        # print info
+        if (idx + 1) % opt.print_freq == 0:
+            print('Train: [{0}][{1}/{2}]\t'.format(
+                epoch, idx + 1, len(train_loader)))
+            #print('output:',output, output.shape)
+
+            sys.stdout.flush()
+
+    return losses.avg
+
+
+def sample_evaluation(val_loader, model, opt):
+    """validation"""
+    model.eval()
+
+    device = opt.device
+    out_list = []
+    label_list = []
+    with torch.no_grad():
+        for idx, (image,bio_tensor, clinical_tensor) in (enumerate(val_loader)):
+
+            images = image.float().to(device)
+            clinical = clinical_tensor.to(device)
+
+            labels = bio_tensor.float()
+
+            labels = labels.float()
+
+            label_list.append(labels.squeeze().detach().cpu().numpy())
+            # forward
+            output = model(images,clinical)
+            output = torch.round(torch.sigmoid(output))
+            out_list.append(output.squeeze().detach().cpu().numpy())
+
+    label_array = np.array(label_list)
+    out_array = np.array(out_list)
+    f = f1_score(label_array,out_array,average='macro')
+    print(f)'''

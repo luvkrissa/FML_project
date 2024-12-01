@@ -37,7 +37,7 @@ def parse_option():
     parser.add_argument('--test_image_path', type=str, default='test data csv')
 
     parser.add_argument('--parallel', type=int, default=1, help='data parallel')
-    parser.add_argument('--ncls', type=int, default=6, help='Number of Classes')
+    parser.add_argument('--ncls', type=int, default=10, help='Number of Classes')
     # model dataset
     parser.add_argument('--model', type=str, default='resnet50')
     parser.add_argument('--dataset', type=str, default='OLIVES',choices=['OLIVES'], help='dataset')
