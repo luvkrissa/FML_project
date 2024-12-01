@@ -21,16 +21,16 @@ class OLIVES(data.Dataset):
     def __getitem__(self, idx):
         path = self.img_dir + self.df.iloc[idx,0]
         image = Image.open(path).convert("L")
-        if self.opt.model in ['maxvit_base_tf_224', 'vit_b_16', 'maxvit_tiny_tf_224']:
+        if self.opt.model in ['maxvit_base_tf_224', 'maxvit_tiny_tf_224']:
             image = image.convert("RGB")  # Convert to RGB directly using PIL
-
         image = np.array(image)
         image = Image.fromarray(image)
         image = self.transforms(image)
         if self.opt.model == 'resnet50':
             bio_values = [self.df.iloc[idx, col] for col in range(2, 8)]  # Extract 
         else:
-            bio_values = [self.df.iloc[idx, col] for col in range(2, 8)]
+            bio_values = [self.df.iloc[idx, col] for col in [6, 7, 8, 10, 12, 13]]
+
 
         # Convert bio values to tensor
         bio_tensor = torch.tensor(bio_values, dtype=torch.float32)
