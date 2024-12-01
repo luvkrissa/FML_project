@@ -102,8 +102,9 @@ def sample_evaluation(val_loader, model, opt):
     
     label_array = np.array(label_list)
     out_array = np.array(out_list)
-    print(out_array)
-    print("Labels contain NaN:", np.isnan(out_array).any())
+    # print(label_array.shape)
+    # print(out_array.shape)
+    # print("Labels contain NaN:", np.isnan(out_array).any())
     f = f1_score(label_array,out_array,average='macro')
     print(f"F1 Score (macro): {f:.4f}")
     # Compute accuracy
@@ -119,6 +120,8 @@ def sample_evaluation(val_loader, model, opt):
     # np.save(f"label_array_{opt.model}.npy", label_array)
     # np.save(f"out_array_{opt.model}.npy", out_array)
     # print("Arrays saved as 'label_array.npy' and 'out_array.npy'")
+    if opt.mode == 'test':
+        return out_list, label_list
 
 
 def main():

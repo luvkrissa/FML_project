@@ -59,7 +59,7 @@ def set_loader(opt):
         transforms.ToTensor(),
         normalize,
     ])
-    if opt.model in ['vit_b_16', 'maxvit_tiny_tf_224', 'maxvit_base_tf_224']:
+    if opt.model in ['maxvit_tiny_tf_224', 'maxvit_base_tf_224']:
         print('applied train transform')
         weights =ResNet50_Weights.DEFAULT
         preprocess = weights.transforms()
