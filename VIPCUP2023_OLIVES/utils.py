@@ -11,6 +11,7 @@ import torch.backends.cudnn as cudnn
 from torchvision import transforms, datasets
 from datasets import OLIVES, RECOVERY, RECOVERY_TEST
 from torchvision.models import resnet50, ResNet50_Weights
+from model import VGGNet, InceptionNet
 
 import torch.nn as nn
 def set_model(opt):
@@ -20,6 +21,11 @@ def set_model(opt):
         model = ResNet(name=opt.model,num_classes = opt.ncls)
     elif opt.model in ['vit_b_16', 'maxvit_tiny_tf_224', 'maxvit_base_tf_224', 'eva02_base_patch16_clip_224']:
         model = Transformer(name=opt.model,num_classes = opt.ncls)
+    elif opt.model in ['vgg16', 'vgg19']:
+        model = VGGNet(name=opt.model,num_classes = opt.ncls)
+    elif opt.model in ['inception']:
+        model = InceptionNet(name=opt.model,num_classes = opt.ncls)
+
     criterion = torch.nn.BCEWithLogitsLoss()
 
     model = model.to(device)
