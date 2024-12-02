@@ -1,5 +1,3 @@
-
-=======
 import torch.utils.data as data
 from PIL import Image
 import numpy as np
