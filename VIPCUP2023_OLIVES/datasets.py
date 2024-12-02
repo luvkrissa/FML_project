@@ -1,3 +1,5 @@
+
+=======
 import torch.utils.data as data
 from PIL import Image
 import numpy as np
@@ -26,7 +28,7 @@ class OLIVES(data.Dataset):
         image = np.array(image)
         image = Image.fromarray(image)
         image = self.transforms(image)
-        if self.opt.model == 'resnet50':
+        if self.opt.model in ('resnet50', 'vgg16', 'inception'):
             bio_values = [self.df.iloc[idx, col] for col in range(2, 8)]  # Extract 
         else:
             bio_values = [self.df.iloc[idx, col] for col in [6, 7, 8, 10, 12, 13]]
@@ -80,3 +82,4 @@ class RECOVERY_TEST(data.Dataset):
         bio_tensor = torch.tensor([b1, b2, b3, b4, b5, b6])
         return image, bio_tensor
 
+>>>>>>> main
