@@ -6,23 +6,24 @@ import torch
 import torch.optim as optim
 import os
 from sklearn.metrics import f1_score
-from model import ResNet
+from model import ResNet, Transformer
 import torch.backends.cudnn as cudnn
 from torchvision import transforms, datasets
 from datasets import OLIVES, RECOVERY, RECOVERY_TEST
+from torchvision.models import resnet50, ResNet50_Weights
 
 import torch.nn as nn
 def set_model(opt):
 
-
     device = opt.device
-    model = ResNet(name=opt.model,num_classes = opt.ncls)
+    if opt.model in ['resnet50', 'resnet101', 'resnet152', 'resnet18', 'inceptionresnetv2']:
+        model = ResNet(name=opt.model,num_classes = opt.ncls)
+    elif opt.model in ['vit_b_16', 'maxvit_tiny_tf_224', 'maxvit_base_tf_224', 'eva02_base_patch16_clip_224']:
+        model = Transformer(name=opt.model,num_classes = opt.ncls)
     criterion = torch.nn.BCEWithLogitsLoss()
 
     model = model.to(device)
     criterion = criterion.to(device)
-
-
     return model, criterion
 
 
@@ -37,7 +38,9 @@ def set_loader(opt):
         std = (.2112)
     else:
         raise ValueError('dataset not supported: {}'.format(opt.dataset))
-
+    if opt.model in ['eva02_base_patch16_clip_224']:
+        mean = (0.5)
+        std = (0.5)
     normalize = transforms.Normalize(mean=mean, std=std)
 
     train_transform = transforms.Compose([
@@ -51,12 +54,18 @@ def set_loader(opt):
         transforms.ToTensor(),
         normalize,
     ])
-
     val_transform = transforms.Compose([
         transforms.Resize((224,224)),
         transforms.ToTensor(),
         normalize,
     ])
+    if opt.model in ['maxvit_tiny_tf_224', 'maxvit_base_tf_224']:
+        print('applied train transform')
+        weights =ResNet50_Weights.DEFAULT
+        preprocess = weights.transforms()
+        # Apply it to the input image
+        train_transform = preprocess
+        val_transform = preprocess
 
 
     if opt.dataset =='OLIVES':
@@ -64,8 +73,8 @@ def set_loader(opt):
         csv_path_test = opt.test_csv_path
         data_path_train = opt.train_image_path
         data_path_test = opt.test_image_path
-        train_dataset = OLIVES(csv_path_train,data_path_train,transforms = train_transform)
-        test_dataset = OLIVES(csv_path_test,data_path_test,transforms = val_transform)
+        train_dataset = OLIVES(csv_path_train,data_path_train,transforms = train_transform,opt = opt)
+        test_dataset = OLIVES(csv_path_test,data_path_test,transforms = val_transform,opt = opt)
     else:
         raise ValueError(opt.dataset)
 

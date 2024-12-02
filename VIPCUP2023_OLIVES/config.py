@@ -17,7 +17,7 @@ def parse_option():
                         help='number of training epochs')
     parser.add_argument('--device', type=str, default='cuda:0')
     # optimization
-    parser.add_argument('--learning_rate', type=float, default=0.05,
+    parser.add_argument('--learning_rate', type=float, default=0.001,
                         help='learning rate')
     parser.add_argument('--patient_lambda', type=float, default=1,
                         help='learning rate')
@@ -37,15 +37,19 @@ def parse_option():
     parser.add_argument('--test_image_path', type=str, default='test data csv')
 
     parser.add_argument('--parallel', type=int, default=1, help='data parallel')
-    parser.add_argument('--ncls', type=int, default=6, help='Number of Classes')
+    parser.add_argument('--ncls', type=int, default=10, help='Number of Classes')
     # model dataset
     parser.add_argument('--model', type=str, default='resnet50')
-    parser.add_argument('--dataset', type=str, default='TREX_DME',
-                        choices=[ 'OLIVES'], help='dataset')
+    parser.add_argument('--dataset', type=str, default='OLIVES',choices=['OLIVES'], help='dataset')
     parser.add_argument('--mean', type=str, help='mean of dataset in path in form of str tuple')
     parser.add_argument('--std', type=str, help='std of dataset in path in form of str tuple')
     parser.add_argument('--data_folder', type=str, default=None, help='path to custom dataset')
     parser.add_argument('--size', type=int, default=128, help='parameter for RandomResizedCrop')
+    parser.add_argument('--model_1_path', type=str, default=128, help='path to model 1 load')
+    parser.add_argument('--model_2_path', type=str, default=128, help='path to model 2 load')
+    parser.add_argument('--model_2', type=str, default='resnet50')
+    parser.add_argument('--mode', type=str, default='train')
+
 
     # temperature
     parser.add_argument('--temp', type=float, default=0.07,
