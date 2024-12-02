@@ -79,5 +79,3 @@ class RECOVERY_TEST(data.Dataset):
         b6 = self.df.iloc[idx, 6]
         bio_tensor = torch.tensor([b1, b2, b3, b4, b5, b6])
         return image, bio_tensor
-
->>>>>>> main
